@@ -1,0 +1,2 @@
+include ':rx3firebase'
+rootProject.name='Rx3Firebase'
