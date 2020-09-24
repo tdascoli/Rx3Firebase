@@ -1,4 +1,5 @@
 # Rx3Firebase
+[![](https://jitpack.io/v/tdascoli/Rx3Firebase.svg)](https://jitpack.io/#tdascoli/Rx3Firebase)
 [RxJava 3.0](https://github.com/ReactiveX/RxJava/tree/3.x) wrapper on Google's [Android Firebase](https://firebase.google.com/docs/android/setup) library.
 
 This repository started as a personal usage of [Nick Moskalenko](https://github.com/nmoskalenko) RxFirebase library. You can check his work [here](https://github.com/nmoskalenko/RxFirebase).
