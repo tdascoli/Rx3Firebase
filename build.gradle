@@ -25,7 +25,7 @@ allprojects {
             maven(MavenPublication) {
                 groupId = 'com.github.tdascoli'
                 artifactId = 'Rx3Firebase'
-                version = '1.0.1'
+                version = "$project.version"
             }
         }
     }
