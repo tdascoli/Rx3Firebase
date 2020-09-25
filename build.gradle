@@ -20,16 +20,6 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
     }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId = 'com.github.tdascoli'
-                artifactId = 'Rx3Firebase'
-                version = "$project.version"
-            }
-        }
-    }
 }
 
 task clean(type: Delete) {

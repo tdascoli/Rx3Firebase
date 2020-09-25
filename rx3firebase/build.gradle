@@ -11,6 +11,9 @@ task sourceJar(type: Jar) {
 publishing {
     publications {
         mavenAar(MavenPublication) {
+            groupId = 'com.github.tdascoli'
+            artifactId = 'Rx3Firebase'
+            version = "$project.version"
             // Publish AAR
             from components.android
             // Publish sources
