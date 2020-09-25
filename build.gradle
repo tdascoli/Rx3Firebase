@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         google()
@@ -7,14 +6,27 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.google.gms:google-services:4.3.3'
     }
 }
 
 allprojects {
+    apply plugin: 'maven-publish'
+
     repositories {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = 'com.github.tdascoli'
+                artifactId = 'Rx3Firebase'
+                version = '1.0.1'
+            }
+        }
     }
 }
 
