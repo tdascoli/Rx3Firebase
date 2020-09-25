@@ -1,34 +1,41 @@
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.library'
+apply plugin: 'digital.wup.android-maven-publish'
+
+// Sources
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+}
+
+publishing {
+    publications {
+        mavenAar(MavenPublication) {
+            // Publish AAR
+            from components.android
+            // Publish sources
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
 
 android {
-
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE-FIREBASE.txt'
-        exclude 'META-INF/NOTICE'
-    }
-
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode createVersionCode()
         versionName "$project.version"
     }
 }
 
-repositories{
-    google()
-}
-
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     // firebase
+    implementation "com.google.firebase:firebase-iid:20.2.4"
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.firebase:firebase-database:19.4.0'
     implementation "com.google.firebase:firebase-storage:19.2.0"

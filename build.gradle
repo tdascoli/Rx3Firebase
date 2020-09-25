@@ -13,6 +13,7 @@ buildscript {
 
 allprojects {
     apply plugin: 'digital.wup.android-maven-publish'
+    apply plugin: 'maven-publish'
 
     repositories {
         google()
@@ -22,7 +23,7 @@ allprojects {
 
     publishing {
         publications {
-            maven(MavenPublication) {
+            mavenJava(MavenPublication) {
                 groupId = 'com.github.tdascoli'
                 artifactId = 'Rx3Firebase'
                 version = "$project.version"
