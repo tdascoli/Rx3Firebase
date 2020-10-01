@@ -12,7 +12,7 @@ Then [Francisco García Sierra](https://github.com/FrangSierra) has ported it to
 
 ```groovy
 dependencies {
-  implementation 'com.github.tdascoli:Rx3Firebase:1.0.0'
+  implementation 'com.github.tdascoli:Rx3Firebase:1.0.3'
 }
 ```
 ```
