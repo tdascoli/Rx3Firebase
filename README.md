@@ -12,7 +12,7 @@ Then [Francisco García Sierra](https://github.com/FrangSierra) has ported it to
 
 ```groovy
 dependencies {
-  implementation 'com.github.tdascoli:Rx3Firebase:1.0.0'
+  implementation 'com.github.tdascoli:Rx3Firebase:1.0.3'
 }
 ```
 ```
@@ -159,6 +159,9 @@ At the moment RxFirebaseQuery just allow the user to create the queries and retr
 				  Log.i("RxFirebase", "New tweet for user feed: " + tweet.getDescription());
 			       }
 			    });
+```
+
+<a href='https://ko-fi.com/H2H32EWM1' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## License
 
