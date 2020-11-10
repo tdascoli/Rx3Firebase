@@ -12,16 +12,16 @@ Then [Francisco García Sierra](https://github.com/FrangSierra) has ported it to
 
 ```groovy
 dependencies {
-  implementation 'com.github.tdascoli:Rx3Firebase:1.0.3'
+  implementation 'com.github.tdascoli:Rx3Firebase:1.0.4'
 }
 ```
 ```
 allprojects {
-		repositories {
-			...
-			maven { url "https://jitpack.io" }
-		}
+	repositories {
+		...
+		maven { url "https://jitpack.io" }
 	}
+}
 ```
 
 ## Usage
