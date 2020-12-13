@@ -1,6 +1,7 @@
 package com.apollo29.rx3firebase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.apollo29.rx3firebase.exceptions.RxFirebaseDataException;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -455,6 +456,21 @@ public class RxFirebaseDatabase {
     }
 
     /**
+     * Listener for changes in te data at the given query location.
+     *
+     * @param query reference represents a particular location in your Database and can be used for reading or writing data to that Database location.
+     * @param clazz class type for the {@link DataSnapshot} items.
+     * @param fallback fallback if {@link DataSnapshot} is empty.
+     * @return a {@link Flowable} which emits when a value of the database change in the given query.
+     */
+    @NonNull
+    public static <T> Flowable<T> observeValueEvent(@NonNull final Query query,
+                                                    @NonNull final Class<T> clazz,
+                                                    @Nullable final T fallback) {
+        return observeValueEvent(query, DataSnapshotMapper.of(clazz, fallback), BackpressureStrategy.DROP);
+    }
+
+    /**
      * Listener for for child events occurring at the given query location.
      *
      * @param query reference represents a particular location in your Database and can be used for reading or writing data to that Database location.
@@ -462,8 +478,23 @@ public class RxFirebaseDatabase {
      * @return a {@link Flowable} which emits when a value of a child int the database change on the given query.
      */
     @NonNull
-    public static <T> Flowable<RxFirebaseChildEvent<T>> observeChildEvent(
-        @NonNull final Query query, @NonNull final Class<T> clazz) {
+    public static <T> Flowable<RxFirebaseChildEvent<T>> observeChildEvent(@NonNull final Query query,
+                                                                          @NonNull final Class<T> clazz) {
+        return observeChildEvent(query, DataSnapshotMapper.ofChildEvent(clazz), BackpressureStrategy.DROP);
+    }
+
+    /**
+     * Listener for for child events occurring at the given query location.
+     *
+     * @param query reference represents a particular location in your Database and can be used for reading or writing data to that Database location.
+     * @param clazz class type for the {@link DataSnapshot} items.
+     * @param fallback fallback if {@link DataSnapshot} is empty.
+     * @return a {@link Flowable} which emits when a value of a child int the database change on the given query.
+     */
+    @NonNull
+    public static <T> Flowable<RxFirebaseChildEvent<T>> observeChildEvent(@NonNull final Query query,
+                                                                          @NonNull final Class<T> clazz,
+                                                                          @Nullable final T fallback) {
         return observeChildEvent(query, DataSnapshotMapper.ofChildEvent(clazz), BackpressureStrategy.DROP);
     }
 

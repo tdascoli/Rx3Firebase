@@ -12,16 +12,16 @@ Then [Francisco García Sierra](https://github.com/FrangSierra) has ported it to
 
 ```groovy
 dependencies {
-  implementation 'com.github.tdascoli:Rx3Firebase:1.0.3'
+    implementation 'com.github.tdascoli:Rx3Firebase:1.0.5'
 }
 ```
 ```
 allprojects {
-		repositories {
-			...
-			maven { url "https://jitpack.io" }
-		}
-	}
+    repositories {
+            ...
+            maven { url "https://jitpack.io" }
+        }
+    }
 ```
 
 ## Usage
@@ -80,6 +80,16 @@ You can observe values providing the Class of expected data like:
 
 ```java
     RxFirebaseDatabase.observeSingleValueEvent(getPostsRef().child("posts"), Post.class)
+                .subscribe(post -> {
+           //Do something with yourpost 
+        });
+```
+
+Additionaly cou can add a default/fallback value if the data might be null:
+
+```java
+    Post fallback = new Post();
+    RxFirebaseDatabase.observeSingleValueEvent(getPostsRef().child("posts"), Post.class, fallback)
                 .subscribe(post -> {
            //Do something with yourpost 
         });

@@ -1,6 +1,7 @@
 package com.apollo29.rx3firebase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.apollo29.rx3firebase.exceptions.RxFirebaseDataCastException;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,10 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
         return new TypedDataSnapshotMapper<U>(clazz);
     }
 
+    public static <U> DataSnapshotMapper<DataSnapshot, U> of(Class<U> clazz, U fallback) {
+        return new TypedDataSnapshotMapper<U>(clazz, fallback);
+    }
+
     public static <U> DataSnapshotMapper<DataSnapshot, List<U>> listOf(Class<U> clazz) {
         return new TypedListDataSnapshotMapper<>(clazz);
     }
@@ -43,7 +48,15 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
         return new ChildEventDataSnapshotMapper<U>(clazz);
     }
 
+    public static <U> DataSnapshotMapper<RxFirebaseChildEvent<DataSnapshot>, RxFirebaseChildEvent<U>> ofChildEvent(Class<U> clazz, U fallback) {
+        return new ChildEventDataSnapshotMapper<U>(clazz, fallback);
+    }
+
     private static <U> U getDataSnapshotTypedValue(DataSnapshot dataSnapshot, Class<U> clazz) {
+        return getDataSnapshotTypedValue(dataSnapshot, clazz, null);
+    }
+
+    private static <U> U getDataSnapshotTypedValue(DataSnapshot dataSnapshot, Class<U> clazz, @Nullable U fallback) {
         U value;
         try {
             value = dataSnapshot.getValue(clazz);
@@ -52,8 +65,13 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
                 "There was a problem trying to cast " + dataSnapshot.toString() + " to " + clazz.getSimpleName(), ex));
         }
         if (value == null) {
-            throw Exceptions.propagate(new RxFirebaseDataCastException(
-                "The value after cast  " + dataSnapshot.toString() + " to " + clazz.getSimpleName() + "is null."));
+            if (fallback == null) {
+                throw Exceptions.propagate(new RxFirebaseDataCastException(
+                        "The value after cast  " + dataSnapshot.toString() + " to " + clazz.getSimpleName() + " is null."));
+            }
+            else {
+                value = fallback;
+            }
         }
         return value;
     }
@@ -61,14 +79,21 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
     private static class TypedDataSnapshotMapper<U> extends DataSnapshotMapper<DataSnapshot, U> {
 
         private final Class<U> clazz;
+        @Nullable
+        private U fallback;
 
         public TypedDataSnapshotMapper(final Class<U> clazz) {
             this.clazz = clazz;
         }
 
+        public TypedDataSnapshotMapper(final Class<U> clazz, @Nullable U fallback) {
+            this.clazz = clazz;
+            this.fallback = fallback;
+        }
+
         @Override
         public U apply(final DataSnapshot dataSnapshot) {
-            return getDataSnapshotTypedValue(dataSnapshot, clazz);
+            return getDataSnapshotTypedValue(dataSnapshot, clazz, fallback);
         }
     }
 
@@ -139,9 +164,16 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
         extends DataSnapshotMapper<RxFirebaseChildEvent<DataSnapshot>, RxFirebaseChildEvent<U>> {
 
         private final Class<U> clazz;
+        @Nullable
+        private U fallback;
 
         public ChildEventDataSnapshotMapper(final Class<U> clazz) {
             this.clazz = clazz;
+        }
+
+        public ChildEventDataSnapshotMapper(final Class<U> clazz, U fallback) {
+            this.clazz = clazz;
+            this.fallback = fallback;
         }
 
         @Override
@@ -150,7 +182,7 @@ public abstract class DataSnapshotMapper<T, U> implements Function<T, U> {
             if (dataSnapshot.exists()) {
                 return new RxFirebaseChildEvent<U>(
                     dataSnapshot.getKey(),
-                    getDataSnapshotTypedValue(dataSnapshot, clazz),
+                    getDataSnapshotTypedValue(dataSnapshot, clazz, fallback),
                     rxFirebaseChildEvent.getPreviousChildName(),
                     rxFirebaseChildEvent.getEventType());
             } else {
